@@ -1,37 +1,32 @@
 FROM node:20-alpine AS base
 
-RUN apk update && apk add --no-cache libc6-compat
-
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-FROM base AS builder
+# Install dependencies
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
+COPY apps/medusa ./apps/medusa
 
-COPY . .
+# Install dependencies
+RUN yarn install --frozen-lockfile
 
-RUN npx --yes turbo@2.1.2 prune --scope=medusa --docker
+# Build the app
+WORKDIR /app/apps/medusa
+RUN yarn build
 
-FROM base AS installer
+# Production image
+FROM node:20-alpine AS runner
+WORKDIR /app
 
-COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/yarn.lock yarn.lock
-COPY --from=builder /app/.yarnrc.yml .yarnrc.yml
-COPY --from=builder /app/.yarn .yarn
-
-RUN yarn install
-
-COPY --from=builder /app/out/full/ .
-
-RUN yarn turbo build --filter=medusa && \
-    rm -rf node_modules/.cache .yarn/cache
-
-FROM base AS runner
-
-COPY --chown=node:node --from=installer /app/ .
-
-USER 1000
+COPY --from=base /app/node_modules ./node_modules
+COPY --from=base /app/apps/medusa ./apps/medusa
 
 WORKDIR /app/apps/medusa
 
 ENV PORT=80
+ENV NODE_ENV=production
+
+USER node
 
 CMD ["yarn", "start:prod"]

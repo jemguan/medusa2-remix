@@ -1,6 +1,7 @@
 {
   "name": "root",
   "private": true,
+  "packageManager": "yarn@4.5.0",
   "scripts": {
     "build": "turbo build",
     "start": "turbo start",
@@ -20,7 +21,6 @@
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "yarn@4.5.0",
   "workspaces": [
     "apps/*",
     "packages/*"
