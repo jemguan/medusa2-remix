@@ -10,7 +10,6 @@ COPY . .
 RUN yarn install
 
 # Build the app
-WORKDIR /app/apps/medusa
 RUN yarn build
 
 # Production image
@@ -18,9 +17,7 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 
 COPY --from=base /app/node_modules ./node_modules
-COPY --from=base /app/apps/medusa ./apps/medusa
-
-WORKDIR /app/apps/medusa
+COPY --from=base /app .
 
 ENV PORT=80
 ENV NODE_ENV=production

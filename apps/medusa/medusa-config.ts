@@ -3,7 +3,7 @@ import { defineConfig, loadEnv } from '@medusajs/framework/utils';
 loadEnv(process.env.NODE_ENV || 'development', process.cwd());
 
 const REDIS_URL = process.env.REDIS_URL;
-const STRIPE_API_KEY = process.env.STRIPE_API_KEY;
+// const STRIPE_API_KEY = process.env.STRIPE_API_KEY;
 const IS_TEST = process.env.NODE_ENV === 'test';
 
 const cacheModule = IS_TEST
@@ -48,6 +48,8 @@ module.exports = defineConfig({
     redisPrefix: process.env.REDIS_PREFIX,
   },
   modules: [
+    // 暂时禁用 Stripe 支付模块
+    /*
     {
       resolve: '@medusajs/medusa/payment',
       options: {
@@ -62,6 +64,7 @@ module.exports = defineConfig({
         ],
       },
     },
+    */
     {
       resolve: "@medusajs/medusa/file",
       options: {
