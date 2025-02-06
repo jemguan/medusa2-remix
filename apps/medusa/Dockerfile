@@ -4,9 +4,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install dependencies
-COPY package.json yarn.lock .yarnrc.yml ./
-COPY .yarn ./.yarn
-COPY apps/medusa ./apps/medusa
+COPY . .
 
 # Install dependencies
 RUN yarn install --frozen-lockfile
