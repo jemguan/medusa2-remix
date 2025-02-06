@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "nukedb": "docker compose down -v && docker compose up -d",
-    "build": "npx medusa build",
+    "build": "medusa build",
     "seed": "medusa exec ./src/scripts/seed.ts",
     "start": "medusa start",
     "dev": "medusa develop",
@@ -28,8 +28,7 @@
     "test:unit": "TEST_TYPE=unit NODE_OPTIONS=--experimental-vm-modules jest --silent --runInBand --forceExit",
     "medusa:init": "yarn run nukedb && medusa db:create --db medusa2 && yarn run migrate && yarn run sync && yarn run seed && yarn run add-user",
     "add-user": "medusa user --email admin@medusa-test.com --password supersecret && medusa user --email admin@lambdacurry.dev --password password",
-    "predeploy": "medusa db:migrate",
-    "railway:start": "yarn predeploy && medusa start"
+    "predeploy": "medusa db:migrate"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.0.0",
