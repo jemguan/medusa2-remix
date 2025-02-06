@@ -14,10 +14,6 @@ RUN npx medusa build
 
 # Production image
 FROM node:20-alpine AS runner
-WORKDIR /app
-
-COPY --from=base /app/node_modules ./node_modules
-COPY --from=base /app .
 
 ENV PORT=9000
 ENV NODE_ENV=production
