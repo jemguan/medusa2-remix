@@ -34,4 +34,4 @@ ENV SPACE_PATH=${SPACE_PATH}
 
 USER node
 
-CMD ["yarn", "railway:start"]
+CMD ["sh", "-c", "yarn predeploy && yarn start"]
