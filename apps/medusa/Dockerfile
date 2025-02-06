@@ -19,6 +19,7 @@ WORKDIR /app
 
 # 从构建阶段复制所有文件
 COPY --from=base /app .
+COPY --from=base /app/.medusa ./.medusa
 
 ENV PORT=9000
 ENV NODE_ENV=production
@@ -33,4 +34,4 @@ ENV SPACE_PATH=${SPACE_PATH}
 
 USER node
 
-CMD ["yarn", "start:prod"]
+CMD ["yarn", "railway:start"]
