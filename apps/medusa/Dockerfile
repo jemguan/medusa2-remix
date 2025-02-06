@@ -36,5 +36,3 @@ ENV SPACE_PATH=${SPACE_PATH}
 RUN chown -R node:node /app
 
 USER node
-
-CMD ["sh", "-c", "yarn predeploy && yarn start:prod"]
