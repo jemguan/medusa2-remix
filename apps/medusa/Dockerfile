@@ -23,6 +23,12 @@ COPY --from=base /app/.medusa ./.medusa
 
 ENV PORT=9000
 ENV NODE_ENV=production
+ENV REDIS_URL=${REDIS_URL}
+ENV DATABASE_URL=${DATABASE_URL}
+ENV STORE_CORS=${STORE_CORS}
+ENV ADMIN_CORS=${ADMIN_CORS}
+ENV JWT_SECRET=${JWT_SECRET}
+ENV COOKIE_SECRET=${COOKIE_SECRET}
 
 # 确保 S3 环境变量在容器中可用
 ENV SPACE_URL=${SPACE_URL}
@@ -37,4 +43,4 @@ RUN chown -R node:node /app
 
 USER node
 
-CMD ["sh", "-c", "npm run --prefix .medusa/server predeploy && npm run --prefix .medusa/server start"]
+CMD ["yarn", "start"]
