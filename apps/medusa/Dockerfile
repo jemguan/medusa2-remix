@@ -10,7 +10,7 @@ COPY . .
 RUN yarn install
 
 # Build the app
-RUN npx medusa build
+RUN yarn build
 
 # Production image
 FROM node:20-alpine AS runner
@@ -43,4 +43,4 @@ RUN chown -R node:node /app
 
 USER node
 
-CMD ["npx", "medusa", "start"]
+CMD ["yarn", "start"]
