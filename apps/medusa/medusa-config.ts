@@ -4,7 +4,7 @@ loadEnv(process.env.NODE_ENV || 'development', process.cwd());
 
 // const REDIS_URL = process.env.REDIS_URL;
 // const STRIPE_API_KEY = process.env.STRIPE_API_KEY;
-// const IS_TEST = process.env.NODE_ENV === 'test';
+const IS_TEST = process.env.NODE_ENV === 'test';
 
 module.exports = defineConfig({
   projectConfig: {
@@ -16,6 +16,7 @@ module.exports = defineConfig({
       jwtSecret: process.env.JWT_SECRET || "supersecret",
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
     },
+    redisUrl: process.env.CACHE_REDIS_URL,
   },
 
   modules: [
@@ -81,18 +82,6 @@ module.exports = defineConfig({
         },
       },
       key: "workflows",
-    },
-    {
-      resolve: "@medusajs/medusa/locking",
-      options: {
-        driver: {
-          resolve: "@medusajs/medusa/locking-redis",
-          options: {
-            redisUrl: process.env.LOCKING_REDIS_URL,
-          },
-        },
-      },
-      key: "locking",
     },
   ],
   admin: {
