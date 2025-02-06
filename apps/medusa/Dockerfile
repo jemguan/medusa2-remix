@@ -32,6 +32,9 @@ ENV SPACE_SECRET_ACCESS_KEY=${SPACE_SECRET_ACCESS_KEY}
 ENV SPACE_REGION=${SPACE_REGION}
 ENV SPACE_PATH=${SPACE_PATH}
 
+# 设置目录权限
+RUN chown -R node:node /app
+
 USER node
 
-CMD ["sh", "-c", "yarn predeploy && yarn start"]
+CMD ["sh", "-c", "yarn predeploy && yarn start:prod"]
