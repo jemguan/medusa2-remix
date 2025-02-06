@@ -2,38 +2,9 @@ import { defineConfig, loadEnv } from '@medusajs/framework/utils';
 
 loadEnv(process.env.NODE_ENV || 'development', process.cwd());
 
-const REDIS_URL = process.env.REDIS_URL;
+// const REDIS_URL = process.env.REDIS_URL;
 // const STRIPE_API_KEY = process.env.STRIPE_API_KEY;
-const IS_TEST = process.env.NODE_ENV === 'test';
-
-const cacheModule = REDIS_URL
-  ? { resolve: '@medusajs/medusa/cache-inmemory' }
-  : {
-      resolve: '@medusajs/medusa/cache-redis',
-      options: {
-        redisUrl: REDIS_URL,
-      },
-    };
-
-const eventBusModule = REDIS_URL
-  ? { resolve: '@medusajs/medusa/event-bus-local' }
-  : {
-      resolve: '@medusajs/medusa/event-bus-redis',
-      options: {
-        redisUrl: REDIS_URL,
-      },
-    };
-
-const workflowEngineModule = REDIS_URL
-  ? { resolve: '@medusajs/medusa/workflow-engine-inmemory' }
-  : {
-      resolve: '@medusajs/medusa/workflow-engine-redis',
-      options: {
-        redis: {
-          url: REDIS_URL,
-        },
-      },
-    };
+// const IS_TEST = process.env.NODE_ENV === 'test';
 
 module.exports = defineConfig({
   projectConfig: {
@@ -45,9 +16,7 @@ module.exports = defineConfig({
       jwtSecret: process.env.JWT_SECRET || "supersecret",
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
     },
-    redisUrl: process.env.REDIS_URL,
   },
-
 
   modules: [
     // 暂时禁用 Stripe 支付模块
@@ -90,9 +59,41 @@ module.exports = defineConfig({
         ],
       },
     },
-    cacheModule,
-    eventBusModule,
-    workflowEngineModule,
+    {
+      resolve: "@medusajs/medusa/cache-redis",
+      options: {
+        redisUrl: process.env.CACHE_REDIS_URL,
+      },
+      key: "cache",
+    },
+    {
+      resolve: "@medusajs/medusa/event-bus-redis",
+      options: {
+        redisUrl: process.env.EVENT_REDIS_URL,
+      },
+      key: "events",
+    },
+    {
+      resolve: "@medusajs/medusa/workflow-engine-redis",
+      options: {
+        redis: {
+          url: process.env.WORKFLOW_REDIS_URL,
+        },
+      },
+      key: "workflows",
+    },
+    {
+      resolve: "@medusajs/medusa/locking",
+      options: {
+        driver: {
+          resolve: "@medusajs/medusa/locking-redis",
+          options: {
+            redisUrl: process.env.LOCKING_REDIS_URL,
+          },
+        },
+      },
+      key: "locking",
+    },
   ],
   admin: {
     backendUrl: process.env.ADMIN_BACKEND_URL || 'http://localhost:9000',
