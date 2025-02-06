@@ -7,7 +7,10 @@ WORKDIR /app
 COPY . .
 
 # Install dependencies
-RUN yarn install --frozen-lockfile
+RUN yarn install
+
+# Build the app
+RUN cd apps/medusa && npx medusa build
 
 # Production image
 FROM node:20-alpine AS runner
