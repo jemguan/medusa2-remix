@@ -6,7 +6,7 @@ const REDIS_URL = process.env.REDIS_URL;
 // const STRIPE_API_KEY = process.env.STRIPE_API_KEY;
 const IS_TEST = process.env.NODE_ENV === 'test';
 
-const cacheModule = IS_TEST
+const cacheModule = REDIS_URL
   ? { resolve: '@medusajs/medusa/cache-inmemory' }
   : {
       resolve: '@medusajs/medusa/cache-redis',
@@ -15,7 +15,7 @@ const cacheModule = IS_TEST
       },
     };
 
-const eventBusModule = IS_TEST
+const eventBusModule = REDIS_URL
   ? { resolve: '@medusajs/medusa/event-bus-local' }
   : {
       resolve: '@medusajs/medusa/event-bus-redis',
@@ -24,7 +24,7 @@ const eventBusModule = IS_TEST
       },
     };
 
-const workflowEngineModule = IS_TEST
+const workflowEngineModule = REDIS_URL
   ? { resolve: '@medusajs/medusa/workflow-engine-inmemory' }
   : {
       resolve: '@medusajs/medusa/workflow-engine-redis',
@@ -45,8 +45,10 @@ module.exports = defineConfig({
       jwtSecret: process.env.JWT_SECRET || "supersecret",
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
     },
-    redisPrefix: process.env.REDIS_PREFIX,
+    redisUrl: process.env.REDIS_URL,
   },
+
+
   modules: [
     // 暂时禁用 Stripe 支付模块
     /*

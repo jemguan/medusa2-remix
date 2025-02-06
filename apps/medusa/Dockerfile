@@ -10,7 +10,7 @@ COPY . .
 RUN yarn install
 
 # Build the app
-RUN yarn build
+RUN npx medusa build
 
 # Production image
 FROM node:20-alpine AS runner
