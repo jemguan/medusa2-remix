@@ -50,4 +50,4 @@ RUN chown -R node:node /app
 
 USER node
 
-CMD ["yarn", "start"]
+CMD ["sh", "-c", "cd .medusa/server && yarn start"]
