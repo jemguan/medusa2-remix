@@ -9,6 +9,9 @@ COPY . .
 # Install dependencies
 RUN yarn install
 
+# Install medusa CLI globally
+RUN yarn global add @medusajs/cli
+
 # Build the app
 RUN yarn build
 
@@ -20,6 +23,7 @@ WORKDIR /app
 # 从构建阶段复制所有文件
 COPY --from=base /app .
 COPY --from=base /app/.medusa ./.medusa
+COPY --from=base /usr/local/share/.config/yarn/global ./global
 
 ENV PORT=9000
 ENV NODE_ENV=production
@@ -37,6 +41,9 @@ ENV SPACE_ACCESS_KEY_ID=${SPACE_ACCESS_KEY_ID}
 ENV SPACE_SECRET_ACCESS_KEY=${SPACE_SECRET_ACCESS_KEY}
 ENV SPACE_REGION=${SPACE_REGION}
 ENV SPACE_PATH=${SPACE_PATH}
+
+# Add global yarn bin to PATH
+ENV PATH="/app/global/node_modules/.bin:${PATH}"
 
 # 设置目录权限
 RUN chown -R node:node /app
