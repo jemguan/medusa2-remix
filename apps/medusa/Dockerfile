@@ -11,7 +11,7 @@ RUN yarn install --frozen-lockfile
 
 # Build the app
 WORKDIR /app/apps/medusa
-RUN yarn medusa-admin build && \
+RUN npx medusa-admin build && \
     yarn tsc -p tsconfig.json
 
 # Production image
