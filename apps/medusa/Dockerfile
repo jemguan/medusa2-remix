@@ -36,3 +36,5 @@ ENV SPACE_PATH=${SPACE_PATH}
 RUN chown -R node:node /app
 
 USER node
+
+CMD ["sh", "-c", "npm run --prefix .medusa/server predeploy && npm run --prefix .medusa/server start"]
